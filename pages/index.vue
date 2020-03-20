@@ -1,9 +1,19 @@
 <template>
-  <div class="container"></div>
+  <div class="container">
+    <MoviesList />
+  </div>
 </template>
 
 <script>
-export default {};
+import MoviesList from "@/components/MoviesList";
+export default {
+  async fetch({ store }) {
+    await store.dispatch("getMovies");
+  },
+  components: {
+    MoviesList
+  }
+};
 </script>
 
 <style></style>
