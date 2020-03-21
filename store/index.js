@@ -1,9 +1,17 @@
 export const state = () => {
   movies: [];
+  movie: [];
+  cast: [];
 };
 export const mutations = {
-  setMovies(state, movies) {
+  setMoviesList(state, movies) {
     state.movies = movies;
+  },
+  setMovie(state, movie) {
+    state.movie = movie;
+  },
+  setCast(state, cast) {
+    state.cast = cast;
   }
 };
 export const actions = {
@@ -11,11 +19,27 @@ export const actions = {
     const { data } = await this.$axios.get(
       `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.API_KEY}`
     );
-    commit("setMovies", data.results);
+    commit("setMoviesList", data.results);
+  },
+  async getMovieDetails({ commit }, id) {
+    const { data } = await this.$axios.get(
+      `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.API_KEY}`
+    );
+    const cast = await this.$axios.get(
+      `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${process.env.API_KEY}`
+    );
+    commit("setMovie", data);
+    commit("setCast", cast.data.cast);
   }
 };
 export const getters = {
   movies(state) {
     return state.movies;
+  },
+  movie(state) {
+    return state.movie;
+  },
+  cast(state) {
+    return state.cast;
   }
 };
