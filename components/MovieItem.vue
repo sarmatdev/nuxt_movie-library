@@ -1,12 +1,12 @@
 <template>
-  <div class="movie">
+  <nuxt-link class="movie" :to="`/movie/${movie.id}`">
     <img
       :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
       alt=""
       class="movie__img"
     />
     <h2 class="movie__title">{{ movie.title }}</h2>
-  </div>
+  </nuxt-link>
 </template>
 
 <script>
@@ -70,6 +70,7 @@ export default {
     font-size: 1.6rem;
     font-weight: 300;
     padding: 1rem;
+    text-align: center;
   }
 }
 </style>
