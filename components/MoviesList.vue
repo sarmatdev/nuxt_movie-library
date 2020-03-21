@@ -1,6 +1,6 @@
 <template>
   <section class="movies-container">
-    <MovieItem v-for="movie in movies" :movie="movie" />
+    <MovieItem v-for="movie in movies" :key="movie.id" :movie="movie" />
   </section>
 </template>
 
