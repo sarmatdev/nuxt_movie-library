@@ -24,7 +24,7 @@ export default {
   line-height: 1;
   font-weight: 500;
   // font-size: 1.3rem;
-  width: auto;
+  width: 8rem;
   background-color: var(--text-color);
   border: 1px solid var(--color-primary);
   border-radius: 5rem;

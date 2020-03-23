@@ -1,49 +1,43 @@
 <template>
   <div>
-    <section
-      class="movie-hero"
-      :style="{
-        backgroundImage: `url(https://image.tmdb.org/t/p/original/${movie.backdrop_path})`
-      }"
-    >
+    <section class="movie-hero" :style="backdrop">
       <h1 class="movie-hero__title">{{ movie.title }}</h1>
-      <!-- <Button :link="`https://www.imdb.com/title/${movie.imdb_id}`">IMDB </Button> -->
     </section>
     <section class="movie-description">
-      <img
-        :src="`https://image.tmdb.org/t/p/original${movie.poster_path}`"
-        alt=""
-        class="movie-description__poster"
-      />
-      <main class="movie-description__box">
-        <h1 class="movie-description__title">Overview</h1>
-        <p class="movie-description__overview">{{ movie.overview }}</p>
+      <img :src="poster" alt="" class="movie-description__poster" />
+      <main class="movie-description__section">
+        <div class="section">
+          <h1 class="section__title">Overview</h1>
+          <p class="section__overview">{{ movie.overview }}</p>
+        </div>
+        <div class="section">
+          <h1 class="section__title">Genres</h1>
+          <ul class="section__list">
+            <li
+              class="section__list-item"
+              v-for="genre in movie.genres"
+              :key="genre.id"
+            >
+              {{ genre.name }}
+            </li>
+          </ul>
+        </div>
 
-        <h1 class="movie-description__title">Genres</h1>
-        <ul class="movie-description__list">
+        <h1 class="section__title">Cast</h1>
+        <ul class="section__list">
           <li
-            class="movie-description__list-item"
-            v-for="genre in movie.genres"
-            :key="genre.id"
-          >
-            <Link>{{ genre.name }}</Link>
-          </li>
-        </ul>
-
-        <!-- <h1 class="movie-description__title">Cast</h1>
-        <ul class="movie-description__list">
-          <li
-            class="movie-description__list-item"
+            class="section__list-item"
             v-for="actor in cast"
             :key="cast.cast_id"
           >
             <img
-              :src="`https://image.tmdb.org/t/p/original${actor.profile_path}`"
+              :src="`https://image.tmdb.org/t/p/w400${actor.profile_path}`"
               alt=""
+              class="section__list-img"
             />
             {{ actor.name }}
           </li>
-        </ul> -->
+        </ul>
       </main>
     </section>
   </div>
@@ -52,8 +46,11 @@
 <script>
 import Button from "@/components/Button";
 import Link from "@/components/Link";
+import posterMixin from "@/plugins/mixins/posterMixin";
+import backdropMixin from "@/plugins/mixins/backdropMixin";
 export default {
   layout: "movie",
+  mixins: [posterMixin, backdropMixin],
   async fetch({ store, params }) {
     await store.dispatch("getMovieDetails", params.id);
   },
@@ -84,6 +81,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: var(--color-primary-dark);
 
   &__title {
     width: 60rem;
@@ -94,7 +92,7 @@ export default {
     text-align: center;
     padding: 1rem;
     background-color: rgba(255, 255, 255, 0.9);
-    box-shadow: 0rem 2rem 2rem #263238;
+    box-shadow: 0rem 2rem 2rem var(--color-primary-darker);
     text-transform: uppercase;
     letter-spacing: 1rem;
     transform: skewX(-10deg);
@@ -103,45 +101,56 @@ export default {
 
 .movie-description {
   height: 100vh;
-  width: 100vw;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-around;
-  align-items: flex-start;
   color: var(--color-primary);
 
   &__poster {
     max-width: 40rem;
+    height: 60rem;
+    width: 50vw;
     border-radius: 1rem;
-    margin: 3rem;
   }
 
-  &__box {
-    width: 80rem;
-    height: 70rem;
-    margin: 3rem;
-  }
+  &__section {
+    width: 50rem;
 
-  &__title {
-    font-size: 2rem;
-    font-weight: 700;
-    text-transform: uppercase;
-  }
+    .section {
+      &__title {
+        padding-top: 2rem;
+        font-size: 2rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        border-bottom: 2px solid var(--color-primary);
+      }
 
-  &__overview {
-    font-size: 1.4rem;
-  }
+      &__overview {
+        padding-top: 1rem;
+        font-size: 1.4rem;
+      }
 
-  &__list {
-    display: flex;
-    align-items: center;
-  }
+      &__list {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
 
-  &__list-item {
-    padding-left: 1rem;
-    list-style: none;
-    font-size: 1.4rem;
+      &__list-item {
+        padding: 1rem;
+        list-style: none;
+        font-size: 1.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      &__list-img {
+        height: 5rem;
+        width: 5rem;
+        border-radius: 50%;
+      }
+    }
   }
 }
 </style>

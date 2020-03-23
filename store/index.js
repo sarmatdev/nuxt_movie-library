@@ -15,9 +15,9 @@ export const mutations = {
   }
 };
 export const actions = {
-  async getMovies({ commit }) {
+  async getMovies({ commit }, page = 1) {
     const { data } = await this.$axios.get(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.API_KEY}`
+      `https://api.themoviedb.org/3/discover/movie?api_key=${process.env.API_KEY}&page=${page}`
     );
     commit("setMoviesList", data.results);
   },
@@ -30,6 +30,12 @@ export const actions = {
     );
     commit("setMovie", data);
     commit("setCast", cast.data.cast);
+  },
+  async searchMovie({ commit }, name) {
+    const { data } = await this.$axios.get(
+      `https://api.themoviedb.org/3/search/movie?api_key=${process.env.API_KEY}&query=${name}`
+    );
+    commit("setMoviesList", data.results);
   }
 };
 export const getters = {

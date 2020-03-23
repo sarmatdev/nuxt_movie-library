@@ -1,16 +1,14 @@
 <template>
   <nuxt-link class="movie" :to="`/movie/${movie.id}`">
-    <img
-      :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
-      alt=""
-      class="movie__img"
-    />
+    <img :src="poster" alt="" class="movie__img" />
     <h2 class="movie__title">{{ movie.title }}</h2>
   </nuxt-link>
 </template>
 
 <script>
+import posterMixin from "@/plugins/mixins/posterMixin";
 export default {
+  mixins: [posterMixin],
   props: ["movie"],
   name: "MovieItem"
 };
